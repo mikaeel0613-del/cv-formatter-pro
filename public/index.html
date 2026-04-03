@@ -1,1 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CV Formatter Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--dark:#1a1a2e;--darker:#16213e;--accent:#c00000;--accent-light:#e63946;--gold:#d4a853;--surface:#0f0f23;--surface-light:#1e1e3a;--text:#e8e8f0;--text-muted:#8888a8;--border:#2a2a4a}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',sans-serif;background:linear-gradient(135deg,var(--dark),var(--surface),var(--darker));color:var(--text);min-height:100vh}
+input,textarea{width:100%;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;outline:none}input:focus,textarea:focus{border-color:var(--accent)}textarea{resize:vertical;min-height:80px}
+label{display:block;font-size:11px;font-weight:600;color:var(--text-muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.08em}
+.field{margin-bottom:14px}.card{background:linear-gradient(180deg,var(--surface-light),var(--surface));border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:24px}
+.section-title{font-size:12px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:18px}
+.divider{height:1px;background:var(--border);margin:24px 0}.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn-primary{width:100%;padding:14px 24px;background:linear-gradient(135deg,var(--accent),var(--accent-light));color:#fff;font-size:15px;font-weight:700;border:none;border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 24px rgba(192,0,0,0.25)}.btn-primary:hover{transform:translateY(-1px)}.btn-primary:disabled{opacity:0.4;cursor:not-allowed;transform:none}
+.btn-secondary{background:var(--surface-light);border:1px solid var(--border);color:var(--text);font-size:13px;padding:7px 16px;border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-add{background:rgba(192,0,0,0.12);border:1px solid rgba(192,0,0,0.3);color:var(--accent);font-size:12px;font-weight:600;padding:5px 14px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-remove{position:absolute;top:12px;right:12px;background:rgba(230,57,70,0.12);border:none;color:var(--accent-light);border-radius:8px;padding:4px 10px;cursor:pointer;font-size:12px;font-family:'DM Sans',sans-serif}
+.exp-entry{background:var(--surface-light);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px;position:relative}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:14px 24px;border-bottom:1px solid var(--border);background:rgba(15,15,35,0.85);backdrop-filter:blur(12px);position:sticky;top:0;z-index:10}
+.upload-zone{border:2px dashed var(--border);border-radius:14px;padding:32px 24px;text-align:center;cursor:pointer;margin-bottom:28px;background:rgba(30,30,58,0.5);transition:all 0.2s}.upload-zone:hover{border-color:var(--accent);background:rgba(30,30,58,0.8)}
+.logo-upload{width:80px;height:80px;border-radius:12px;border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;flex-shrink:0;background:var(--surface)}.logo-upload img{max-width:100%;max-height:100%;object-fit:contain}
+.hidden{display:none !important}.container{max-width:640px;margin:0 auto;padding:0 24px}.container-wide{max-width:720px;margin:0 auto;padding:24px 24px 64px}
+@keyframes spin{to{transform:rotate(360deg)}}.spinner{display:inline-block;width:18px;height:18px;border:2px solid var(--gold);border-top-color:transparent;border-radius:50%;animation:spin 0.6s linear infinite;vertical-align:middle;margin-right:8px}
+.status-bar{background:var(--surface-light);border:1px solid var(--border);border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:13px}
+</style>
+</head>
+<body>
 
+<!-- SETUP -->
+<div id="step-setup">
+  <div style="text-align:center;padding:48px 24px 32px">
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.25em;color:var(--gold);font-weight:600;margin-bottom:12px">Professional CV Formatter</div>
+    <h1 style="font-family:'Playfair Display',serif;font-size:42px;font-weight:800;margin:0 0 12px;background:linear-gradient(135deg,var(--text),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Brand Your<br>Candidate CVs</h1>
+    <p style="color:var(--text-muted);font-size:16px;max-width:500px;margin:0 auto;line-height:1.6">Upload a candidate CV (.docx or .pdf). AI parses every role. Download a branded <b>Word document</b>.</p>
+  </div>
+  <div class="container" style="padding-bottom:48px">
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:20px;margin-bottom:28px">
+        <div class="logo-upload" onclick="document.getElementById('logoInput').click()"><span id="logoPlaceholder" style="font-size:28px;color:var(--text-muted)">+</span><img id="logoPreviewImg" src="" style="display:none"></div>
+        <input type="file" id="logoInput" accept="image/*" style="display:none">
+        <div><div style="font-weight:600;font-size:15px">Company Logo</div><div style="font-size:12px;color:var(--text-muted)">PNG or JPG</div></div>
+      </div>
+      <div style="display:flex;gap:16px;margin-bottom:20px;align-items:flex-end">
+        <div style="flex:1" class="field"><label>Company Name</label><input id="companyName" placeholder="e.g. Pearson Hunter"></div>
+        <div style="width:130px"><label>Brand Colour</label><div style="display:flex;align-items:center;gap:8px"><input type="color" id="brandColor" value="#C00000" style="width:36px;height:36px;border:none;border-radius:8px;cursor:pointer;background:transparent;padding:0"><span id="colorHex" style="font-size:13px;color:var(--text-muted);font-family:monospace">#C00000</span></div></div>
+      </div>
+      <div class="divider"></div><div class="section-title">Consultant Details</div>
+      <div class="grid-2"><div class="field"><label>Consultant Name</label><input id="consultantName" placeholder="e.g. Jaivin Patel"></div><div class="field"><label>Title</label><input id="consultantTitle" placeholder="e.g. Managing Director"></div></div>
+      <div class="grid-2"><div class="field"><label>Phone</label><input id="consultantPhone" placeholder="e.g. 020 3633 2355"></div><div class="field"><label>Email</label><input id="consultantEmail" placeholder="e.g. jaivinp@pearsonhunter.com"></div></div>
+      <div class="divider"></div><div class="section-title">Company Footer</div>
+      <div class="field"><label>Address</label><input id="companyAddress" placeholder="e.g. The Lansdowne Building, 2 Lansdowne Road, Croydon, United Kingdom, CR0 2BX"></div>
+      <div class="grid-2"><div class="field"><label>Website</label><input id="companyWebsite" placeholder="e.g. www.pearsonhunter.com"></div><div class="field"><label>Reg No.</label><input id="companyReg" placeholder="e.g. Registered in England & Wales No. 09548450"></div></div>
+      <button class="btn-primary" style="margin-top:28px" onclick="goToEditor()">Continue to CV Editor →</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDITOR -->
+<div id="step-editor" class="hidden">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:12px"><button class="btn-secondary" onclick="goToSetup()">← Settings</button><span style="font-weight:700;font-size:15px" id="topbarCompany"></span></div>
+    <button class="btn-primary" style="width:auto;padding:10px 24px;font-size:14px" id="btnDL1" onclick="generateDocx()">↓ Download .docx</button>
+  </div>
+  <div class="container-wide">
+    <div id="statusBar" class="status-bar hidden"></div>
+    <div class="upload-zone" onclick="document.getElementById('cvFileInput').click()">
+      <input type="file" id="cvFileInput" accept=".docx,.pdf,.txt" style="display:none">
+      <div id="uploadIcon" style="font-size:32px;margin-bottom:8px">📄</div>
+      <div id="uploadLabel"><div style="font-weight:600;font-size:16px;margin-bottom:6px">Upload Candidate CV</div><div style="font-size:13px;color:var(--text-muted)">Supports <b>.docx</b> and <b>.pdf</b> — AI will parse all roles automatically</div></div>
+    </div>
+    <div class="card"><div class="section-title">Candidate Profile (Page 1)</div>
+      <div class="field"><label>Name</label><input id="candName"></div>
+      <div class="field"><label>Position Required</label><input id="candPosition"></div>
+      <div class="field"><label>Qualifications</label><input id="candQualifications"></div>
+      <div class="field"><label>Systems (one per line)</label><textarea id="candSystems" style="min-height:70px"></textarea></div>
+      <div class="field"><label>Availability</label><input id="candAvailability"></div>
+      <div class="field"><label>Salary Sought</label><input id="candSalary"></div>
+      <div class="field"><label>Location</label><input id="candLocation"></div>
+    </div>
+    <div class="card"><div class="section-title">Candidate's CV (Page 2+)</div>
+      <div class="field"><label>Profile / Summary</label><textarea id="candProfile" style="min-height:120px"></textarea></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><label style="margin-bottom:0">Professional Experience</label><button class="btn-add" onclick="addExp()">+ Add Role</button></div>
+      <div id="expContainer"></div>
+      <div class="field" style="margin-top:8px"><label>Professional Qualifications (one per line)</label><textarea id="candQualDetail"></textarea></div>
+      <div class="field"><label>Academics (one per line)</label><textarea id="candAcademics"></textarea></div>
+      <div class="field"><label>Interests</label><input id="candInterests"></div>
+    </div>
+    <button class="btn-primary" id="btnDL2" onclick="generateDocx()" style="font-size:16px;padding:16px 24px">↓ Download Branded CV (.docx)</button>
+    <p style="text-align:center;font-size:12px;color:var(--text-muted);margin-top:10px">Generates a Word document you can edit in Microsoft Word</p>
+  </div>
+</div>
+
+<script>
+var logoDataURL = null, exps = [{dates:"",employer:"",position:"",resp:""}];
+var $ = function(id) { return document.getElementById(id); };
+
+$("logoInput").addEventListener("change", function(e) { var f = e.target.files[0]; if (!f) return; var r = new FileReader(); r.onload = function() { logoDataURL = r.result; $("logoPreviewImg").src = logoDataURL; $("logoPreviewImg").style.display = "block"; $("logoPlaceholder").style.display = "none"; }; r.readAsDataURL(f); });
+$("brandColor").addEventListener("input", function(e) { $("colorHex").textContent = e.target.value.toUpperCase(); });
+
+function status(msg, type) { var b = $("statusBar"); b.classList.remove("hidden"); b.innerHTML = type === "loading" ? '<span class="spinner"></span>' + msg : type === "success" ? '<span style="color:var(--gold)">✓</span> ' + msg : '<span style="color:var(--accent-light)">⚠</span> ' + msg; }
+
+// Upload + AI parse
+$("cvFileInput").addEventListener("change", async function(e) {
+  var file = e.target.files[0]; if (!file) return;
+  $("uploadIcon").innerHTML = '<span class="spinner"></span>';
+  $("uploadLabel").innerHTML = '<div style="font-weight:600;color:var(--gold)">AI is reading and parsing ' + file.name + '...</div><div style="font-size:12px;color:var(--text-muted);margin-top:4px">This takes 5-10 seconds</div>';
+  status("AI is extracting and parsing CV...", "loading");
+
+  var fd = new FormData(); fd.append("cv", file);
+  try {
+    var resp = await fetch("/.netlify/functions/extract", { method: "POST", body: fd });
+    var data = await resp.json();
+    if (data.error) throw new Error(data.error);
+
+    var p = data.parsed;
+    if (p.name) $("candName").value = p.name;
+    if (p.position) $("candPosition").value = p.position;
+    if (p.qualifications) $("candQualifications").value = p.qualifications;
+    if (p.systems) $("candSystems").value = p.systems;
+    if (p.availability) $("candAvailability").value = p.availability;
+    if (p.salary) $("candSalary").value = p.salary;
+    if (p.location) $("candLocation").value = p.location;
+    if (p.profile) $("candProfile").value = p.profile;
+    if (p.qualificationsDetail) $("candQualDetail").value = p.qualificationsDetail;
+    if (p.academics) $("candAcademics").value = p.academics;
+    if (p.interests) $("candInterests").value = p.interests;
+    if (p.experience && p.experience.length) {
+      exps = p.experience.map(function(e) { return { dates: e.dates || "", employer: e.employer || "", position: e.position || "", resp: e.responsibilities || "" }; });
+      renderExp();
+    }
+
+    var n = (p.experience || []).length;
+    $("uploadIcon").innerHTML = "✅";
+    $("uploadLabel").innerHTML = '<div style="font-weight:600;color:var(--gold)">' + file.name + '</div><div style="font-size:12px;color:var(--text-muted);margin-top:4px">✓ ' + n + ' role' + (n !== 1 ? 's' : '') + ' parsed — review below and download</div>';
+    status(n + " role" + (n !== 1 ? "s" : "") + " parsed by AI — review and download", "success");
+  } catch(err) {
+    $("uploadIcon").innerHTML = "⚠️";
+    $("uploadLabel").innerHTML = '<div style="color:var(--accent-light);font-weight:600">' + err.message + '</div><div style="font-size:12px;color:var(--text-muted);margin-top:4px">Try again or fill in manually</div>';
+    status("Error: " + err.message, "error");
+  }
+});
+
+// Generate
+async function generateDocx() {
+  var b1 = $("btnDL1"), b2 = $("btnDL2");
+  b1.disabled = b2.disabled = true; b1.textContent = b2.textContent = "Generating...";
+  status("Generating Word document...", "loading");
+
+  try {
+    var resp = await fetch("/.netlify/functions/generate", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        brandColor: $("brandColor").value, company: $("companyName").value,
+        consultantName: $("consultantName").value, consultantTitle: $("consultantTitle").value,
+        consultantPhone: $("consultantPhone").value, consultantEmail: $("consultantEmail").value,
+        companyAddress: $("companyAddress").value, companyWebsite: $("companyWebsite").value,
+        companyReg: $("companyReg").value, logoBase64: logoDataURL,
+        name: $("candName").value, position: $("candPosition").value,
+        qualifications: $("candQualifications").value, systems: $("candSystems").value,
+        availability: $("candAvailability").value, salary: $("candSalary").value,
+        location: $("candLocation").value, profile: $("candProfile").value,
+        experience: exps.map(function(e) { return { dates: e.dates, employer: e.employer, position: e.position, responsibilities: e.resp }; }),
+        qualificationsDetail: $("candQualDetail").value, academics: $("candAcademics").value,
+        interests: $("candInterests").value
+      })
+    });
+    if (!resp.ok) { var err = await resp.json(); throw new Error(err.error); }
+    var blob = await resp.blob();
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "CV_" + ($("candName").value || "Candidate").replace(/[^a-zA-Z0-9 ]/g, "").replace(/\s+/g, "_") + "_" + $("companyName").value.replace(/[^a-zA-Z0-9 ]/g, "").replace(/\s+/g, "_") + ".docx";
+    a.click(); URL.revokeObjectURL(url);
+    status("Word document downloaded!", "success");
+  } catch(err) {
+    status("Error: " + err.message, "error");
+    alert("Error: " + err.message);
+  }
+  b1.disabled = b2.disabled = false; b1.textContent = "↓ Download .docx"; b2.textContent = "↓ Download Branded CV (.docx)";
+}
+
+// Nav
+function goToEditor() { if (!$("companyName").value || !$("consultantName").value) { alert("Enter company and consultant name."); return; } $("step-setup").classList.add("hidden"); $("step-editor").classList.remove("hidden"); $("topbarCompany").textContent = $("companyName").value; renderExp(); saveS(); }
+function goToSetup() { $("step-editor").classList.add("hidden"); $("step-setup").classList.remove("hidden"); }
+
+// Experience
+function renderExp() {
+  var c = $("expContainer"); c.innerHTML = "";
+  exps.forEach(function(e, i) {
+    var d = document.createElement("div"); d.className = "exp-entry";
+    d.innerHTML = '<button class="btn-remove" onclick="rmExp(' + i + ')">Remove</button>' +
+      '<div style="font-size:11px;color:var(--gold);font-weight:600;margin-bottom:10px">ROLE ' + (i+1) + '</div>' +
+      '<div class="grid-2" style="margin-bottom:12px"><div class="field"><label>Dates</label><input value="' + esc(e.dates) + '" oninput="exps[' + i + '].dates=this.value"></div><div class="field"><label>Employer</label><input value="' + esc(e.employer) + '" oninput="exps[' + i + '].employer=this.value"></div></div>' +
+      '<div class="field"><label>Position</label><input value="' + esc(e.position) + '" oninput="exps[' + i + '].position=this.value"></div>' +
+      '<div class="field"><label>Responsibilities (one per line)</label><textarea oninput="exps[' + i + '].resp=this.value" style="min-height:140px">' + esc(e.resp) + '</textarea></div>';
+    c.appendChild(d);
+  });
+}
+function addExp() { exps.push({dates:"",employer:"",position:"",resp:""}); renderExp(); }
+function rmExp(i) { exps.splice(i,1); if (!exps.length) exps.push({dates:"",employer:"",position:"",resp:""}); renderExp(); }
+function esc(s) { return (s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+// Persist
+function saveS() { var s = {}; ["companyName","brandColor","consultantName","consultantTitle","consultantPhone","consultantEmail","companyAddress","companyWebsite","companyReg"].forEach(function(id) { s[id] = $(id).value; }); s.logoDataURL = logoDataURL; localStorage.setItem("cvf", JSON.stringify(s)); }
+function loadS() { try { var r = localStorage.getItem("cvf"); if (!r) return; var s = JSON.parse(r); Object.keys(s).forEach(function(k) { if (k === "logoDataURL") return; if (s[k] && $(k)) $(k).value = s[k]; }); if (s.brandColor) $("colorHex").textContent = s.brandColor.toUpperCase(); if (s.logoDataURL) { logoDataURL = s.logoDataURL; $("logoPreviewImg").src = logoDataURL; $("logoPreviewImg").style.display = "block"; $("logoPlaceholder").style.display = "none"; } } catch(e) {} }
+document.addEventListener("input", function() { if (!$("step-setup").classList.contains("hidden")) { clearTimeout(window._st); window._st = setTimeout(saveS, 500); } }); loadS();
+</script>
+</body>
+</html>
