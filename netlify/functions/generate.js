@@ -57,6 +57,8 @@ exports.handler = async (event) => {
       ] }),
       new Paragraph({ spacing: { before: 0, after: 0 }, children: [] }),
       ] }),
+      new Paragraph({ spacing: { before: 0, after: 0 }, children: [] }),
+      ] }),
       new Paragraph({ children: [new TextRun({ text: String(d.consultantName || ""), font: "Arial", size: 16, color: color })] }),
       new Paragraph({ children: [new TextRun({ text: String(d.consultantTitle || ""), font: "Arial", size: 16, color: color })] }),
       new Paragraph({ children: [new TextRun({ text: "T: " + String(d.consultantPhone || ""), font: "Arial", size: 16, color: color })] }),
