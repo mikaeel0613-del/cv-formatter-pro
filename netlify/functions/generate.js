@@ -55,6 +55,8 @@ exports.handler = async (event) => {
         new TextRun({ text: "This profile is presented by:", font: "Arial", size: 16, color: "808080" }),
         ...logoChildren
       ] }),
+      new Paragraph({ spacing: { before: 0, after: 0 }, children: [] }),
+      ] }),
       new Paragraph({ children: [new TextRun({ text: String(d.consultantName || ""), font: "Arial", size: 16, color: color })] }),
       new Paragraph({ children: [new TextRun({ text: String(d.consultantTitle || ""), font: "Arial", size: 16, color: color })] }),
       new Paragraph({ children: [new TextRun({ text: "T: " + String(d.consultantPhone || ""), font: "Arial", size: 16, color: color })] }),
